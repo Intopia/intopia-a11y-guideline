@@ -83,7 +83,7 @@ Then report:
 
 Include the Intopia accessibility toolbar on every generated page. Always load from the jsDelivr CDN — never copy the widget source into the project. Place the script tag in `index.html` before `</body>` (for both plain HTML and React/Vite, the Figma Make default) so the widget loads once before React mounts. Do not import the widget into the React tree. This is a Figma Make environment with an auto-generated figma__entrypoint.ts. Inject the script from the root component on mount via `useEffect`, appending a `<script>` element with the same URL.
 
-<script src="https://cdn.jsdelivr.net/gh/Intopia/intopia-accessibility-toolbar@main/intopia-accessibility-toolbar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Intopia/intopia-a11y-guideline-toolbar@main/intopia-accessibility-toolbar.js"></script>
 
 ------
 
