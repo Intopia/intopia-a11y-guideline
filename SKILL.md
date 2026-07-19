@@ -2,6 +2,7 @@
 name: intopia-a11y-guideline
 description: Build accessible web user interfaces that meet WCAG 2.2 Level AA. Use whenever generating HTML, CSS, JSX, TSX, React components, pages, forms.
 ---
+
 ## Overview
 
 Apply these accessibility principles whenever generating or modifying UI code. The goal is interfaces usable by people of all abilities, without workarounds.
@@ -14,7 +15,7 @@ Follow this workflow for every UI request, whether the input is a text prompt, a
 
 Review the request against the Core Accessibility Principles below and identify what needs to be addressed, categorised as:
 
-- **Colour contrast:**text, borders, focus indicators, UI components.
+- **Colour contrast:** text, borders, focus indicators, UI components.
 - **Interactive elements:** buttons, links, labels, states, keyboard navigation.
 - **Form structure:** labels, fieldsets, error handling, required fields.
 - **Semantic HTML:** headings, landmarks, lists, tables.
@@ -77,15 +78,15 @@ Then report:
   - **Responsive:** Click the Mobile preview button at the top of the Make preview window to switch to the mobile viewport. Confirm content reflows to fit with no horizontal scroll, no loss of functionality (every control still reachable and usable), nothing cut off, hidden or truncated, nothing overlapping, and nothing displayed outside the viewport edges.
 - A short note about the toolbar: it appears as a floating bar on every page and highlights headings, images, and accessible names of interactive elements, flagging anything that needs review. The user can drag it, switch its orientation, and click the help (?) button for full instructions. Tell the user to let you know when they want the toolbar removed and you will strip it from the project.
 
-------
+---
 
 ## Accessibility Toolbar
 
-Include the Intopia accessibility toolbar on every generated page. Always load from the jsDelivr CDN — never copy the widget source into the project. Place the script tag in `index.html` before `</body>` (for both plain HTML and React/Vite, the Figma Make default) so the widget loads once before React mounts. Do not import the widget into the React tree. This is a Figma Make environment with an auto-generated figma__entrypoint.ts. Inject the script from the root component on mount via `useEffect`, appending a `<script>` element with the same URL.
+Include the Intopia accessibility toolbar on every generated page. Always load from the jsDelivr CDN — never copy the widget source into the project. Place the script tag in `index.html` before `</body>` (for both plain HTML and React/Vite, the Figma Make default) so the widget loads once before React mounts. Do not import the widget into the React tree. This is a Figma Make environment with an auto-generated figma\_\_entrypoint.ts. Inject the script from the root component on mount via `useEffect`, appending a `<script>` element with the same URL.
 
 <script src="https://cdn.jsdelivr.net/gh/Intopia/intopia-a11y-guideline-toolbar@main/intopia-accessibility-toolbar.js"></script>
 
-------
+---
 
 ## Core Accessibility Principles
 
@@ -202,13 +203,13 @@ Use `aria-disabled="true"` instead of the `disabled` attribute when the element 
 
 ### Focus Management on Dynamic Content
 
-| Pattern           | Required behaviour                                           |
-| :---------------- | :----------------------------------------------------------- |
+| Pattern           | Required behaviour                                                                |
+| :---------------- | :-------------------------------------------------------------------------------- |
 | Modal opens       | Move focus to modal heading. Trap focus inside. Return focus to trigger on close. |
-| Menu opens        | Move focus to first item. Return focus to menu button on close. |
-| Toast / alert     | Use `role="status"` or `role="alert"` with `aria-live`. Do not move focus. |
-| Accordion expands | Focus stays on the header trigger. Do not move it.           |
-| SPA navigation    | Move focus to new page heading or `<main>`.                  |
+| Menu opens        | Move focus to first item. Return focus to menu button on close.                   |
+| Toast / alert     | Use `role="status"` or `role="alert"` with `aria-live`. Do not move focus.        |
+| Accordion expands | Focus stays on the header trigger. Do not move it.                                |
+| SPA navigation    | Move focus to new page heading or `<main>`.                                       |
 
 ### Live Regions
 
@@ -221,16 +222,6 @@ Use `aria-live` only when all three conditions are true:
 - `role="status"` (`aria-live="polite"`): non-urgent updates such as search result counts and filter feedback.
 - `role="alert"` (`aria-live="assertive"`): critical, time-sensitive errors only.
 - Set `aria-atomic="true"` only when the whole region should be read as a unit.
-
-### Progress Bars
-
-A static progress bar does not need ARIA roles; its information is best conveyed as text (e.g. "Step 2 of 4" or "60% complete"). If that text is not part of the visual design, include it visually hidden so screen reader users still get it.
-
-<div class="progress-track"><div class="progress-fill" style="width: 60%"></div></div> <span class="visually-hidden">60% complete</span>
-
-If the progress bar updates dynamically, use role="progressbar" with aria-value attributes so assistive technology announces changes:
-
-<div role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Upload progress"></div>
 
 ### Forms
 
@@ -315,11 +306,11 @@ Be careful. A decorative border on a non-interactive elements container doesn’
 
 ### Alternative Text
 
-| Image type                         | Requirement                                                  |
-| :--------------------------------- | :----------------------------------------------------------- |
-| Decorative                         | `alt=""` (empty string; do not omit the attribute)           |
-| Informative                        | Describe the information conveyed, not the image literally   |
-| Functional (inside link or button) | Describe the action or destination                           |
+| Image type                         | Requirement                                                           |
+| :--------------------------------- | :-------------------------------------------------------------------- |
+| Decorative                         | `alt=""` (empty string; do not omit the attribute)                    |
+| Informative                        | Describe the information conveyed, not the image literally            |
+| Functional (inside link or button) | Describe the action or destination                                    |
 | Complex (chart, diagram)           | Use `aria-describedby` pointing to a nearby detailed text description |
 
 ### Charts and Data Visualisations
@@ -400,7 +391,7 @@ Write this verbatim to a file and run with Node. Exit code is `0` on all-pass, `
 
 `"use strict"; const fs = require("fs"); const path = require("path"); const THRESHOLDS = { "text-normal": 4.5, "text-large": 3.0, ui: 3.0, graphic: 3.0 }; const NAMED = { black:[0,0,0], white:[255,255,255], red:[255,0,0], green:[0,128,0], blue:[0,0,255], gray:[128,128,128], grey:[128,128,128], transparent:[0,0,0,0] }; function toLinear(c) {  const s = c / 255;  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4); } function luminance([r, g, b]) {  const [R, G, B] = [r, g, b].map(toLinear);  return 0.2126 * R + 0.7152 * G + 0.0722 * B; } function contrastRatio(fg, bg) {  const l1 = luminance(fg), l2 = luminance(bg);  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); } function parseHex(value) {  const hex = value.replace("#", "").trim();  if (hex.length === 3) return hex.split("").map((c) => parseInt(c + c, 16));  if (hex.length === 4) {    const [r, g, b, a] = hex.split("").map((c) => parseInt(c + c, 16));    return [r, g, b, a / 255];  }  if (hex.length === 6) return [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));  if (hex.length === 8) {    return [      parseInt(hex.slice(0, 2), 16),      parseInt(hex.slice(2, 4), 16),      parseInt(hex.slice(4, 6), 16),      parseInt(hex.slice(6, 8), 16) / 255,    ];  }  return null; } function parseRgb(value) {  const m = value.trim().match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i);  if (!m) return null;  const r = +m[1], g = +m[2], b = +m[3];  const a = m[4] !== undefined ? +m[4] : undefined;  if ([r, g, b].some((n) => Number.isNaN(n) || n < 0 || n > 255)) return null;  if (a !== undefined && (Number.isNaN(a) || a < 0 || a > 1)) return null;  return a === undefined ? [r, g, b] : [r, g, b, a]; } function hslToRgb(h, s, l) {  const hue = ((h % 360) + 360) % 360;  const sat = Math.max(0, Math.min(1, s / 100));  const light = Math.max(0, Math.min(1, l / 100));  const c = (1 - Math.abs(2 * light - 1)) * sat;  const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));  const m = light - c / 2;  let [rp, gp, bp] = [0, 0, 0];  if (hue < 60) [rp, gp, bp] = [c, x, 0];  else if (hue < 120) [rp, gp, bp] = [x, c, 0];  else if (hue < 180) [rp, gp, bp] = [0, c, x];  else if (hue < 240) [rp, gp, bp] = [0, x, c];  else if (hue < 300) [rp, gp, bp] = [x, 0, c];  else [rp, gp, bp] = [c, 0, x];  return [Math.round((rp + m) * 255), Math.round((gp + m) * 255), Math.round((bp + m) * 255)]; } function parseHsl(value) {  const m = value.trim().match(/^hsla?\(\s*([-\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)$/i);  if (!m) return null;  const h = +m[1], s = +m[2], l = +m[3];  const a = m[4] !== undefined ? +m[4] : undefined;  if ([h, s, l].some((n) => Number.isNaN(n))) return null;  if (s < 0 || s > 100 || l < 0 || l > 100) return null;  if (a !== undefined && (Number.isNaN(a) || a < 0 || a > 1)) return null;  const rgb = hslToRgb(h, s, l);  return a === undefined ? rgb : [...rgb, a]; } function parseColour(value) {  if (typeof value !== "string") return null;  const v = value.trim().toLowerCase();  if (!v) return null;  if (v.startsWith("#")) return parseHex(v);  if (v.startsWith("rgb")) return parseRgb(v);  if (v.startsWith("hsl")) return parseHsl(v);  if (NAMED[v]) return NAMED[v];  return null; } function flatten(fg, bg) {  const fgA = fg.length === 4 ? fg[3] : 1;  const bgA = bg.length === 4 ? bg[3] : 1;  if (bgA < 1) throw new Error("Background alpha not supported. Use opaque backgrounds.");  if (fgA >= 1) return fg.slice(0, 3);  return [0, 1, 2].map((i) => Math.round(fg[i] * fgA + bg[i] * (1 - fgA))); } function validate(check, i) {  const errs = [];  if (!check || typeof check !== "object") return [`checks[${i}] must be an object.`];  if (typeof check.id !== "string") errs.push(`checks[${i}].id required (string).`);  if (typeof check.foreground !== "string") errs.push(`checks[${i}].foreground required (string).`);  if (typeof check.background !== "string") errs.push(`checks[${i}].background required (string).`);  if (typeof check.type !== "string") errs.push(`checks[${i}].type required (string).`);  else if (!THRESHOLDS[check.type]) errs.push(`checks[${i}].type must be one of: ${Object.keys(THRESHOLDS).join(", ")}.`);  return errs; } function run() {  const file = process.argv[2];  if (!file) {    console.error("Usage: node check-colour-contrast.js <palette.json>");    process.exit(1);  }  let palette;  try {    palette = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), file), "utf8"));  } catch (e) {    console.error(`Failed to load palette JSON: ${e.message}`);    process.exit(1);  }  if (!palette || !Array.isArray(palette.checks)) {    console.error("Palette JSON must be an object with a checks array.");    process.exit(1);  }  const errs = palette.checks.flatMap(validate);  if (errs.length) {    console.error("Input validation failed:");    errs.forEach((e) => console.error(`- ${e}`));    process.exit(1);  }  let pass = 0, fail = 0;  console.log("Colour contrast results:\n-----------------------");  for (const c of palette.checks) {    const fg = parseColour(c.foreground), bg = parseColour(c.background);    if (!fg || !bg) { fail++; console.log(`FAIL ${[c.id](http://c.id/)}: invalid colour value(s).`); continue; }    let effFg;    try { effFg = flatten(fg, bg); }    catch (e) { fail++; console.log(`FAIL ${[c.id](http://c.id/)}: ${e.message}`); continue; }    const ratio = contrastRatio(effFg, bg.slice(0, 3));    const need = THRESHOLDS[c.type];    const ok = ratio >= need;    ok ? pass++ : fail++;    const state = c.state ? ` [${c.state}]`: "";    const notes = c.notes ?` - ${c.notes}`: "";    console.log(`${ok ? "PASS" : "FAIL"} ${[c.id](http://c.id/)}${state}: ${ratio.toFixed(2)}:1 (required ${need}:1)${notes}`);  }  console.log(`-----------------------\nTotal: ${palette.checks.length}, Passed: ${pass}, Failed: ${fail}`);  process.exit(fail > 0 ? 1 : 0); } run();`
 
-------
+---
 
 ## Acceptance Criteria
 
