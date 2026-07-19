@@ -15,7 +15,7 @@ Follow this workflow for every UI request, whether the input is a text prompt, a
 
 Review the request against the Core Accessibility Principles below and identify what needs to be addressed, categorised as:
 
-- **Colour contrast:**text, borders, focus indicators, UI components.
+- **Colour contrast:** text, borders, focus indicators, UI components.
 - **Interactive elements:** buttons, links, labels, states, keyboard navigation.
 - **Form structure:** labels, fieldsets, error handling, required fields.
 - **Semantic HTML:** headings, landmarks, lists, tables.
